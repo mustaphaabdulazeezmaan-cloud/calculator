@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculator</title>
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+            body{
+                margin: 0%;   
+                color: #ffffff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;      
+            }
+            .calculator{
+                width: 35%;
+                border-radius: 15px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+                padding: 20px;
+            }
+            .head{
+                background-color: #f1b213;
+                height: 30px;
+            }
+            #display {
+                width: 100%;
+                height: 60px;
+                border: none;
+                font-size: 28px;
+                text-align: right;
+                padding-right: 10px;
+                outline: none;
+            }
+            .body{
+                display: flex;
+            }
+            .numbers{
+                background-color: #333c3c;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .no{
+               padding: 30px 40px;
+               text-align: center;
+               cursor: pointer;
+               background-color: #333c3c;
+               border: none;
+               transition: 0.3s;
+               color: #ffffff;           
+               font-size: 30px;
+            }
+            .no:hover {
+                background-color: #555f5f;
+                border-radius: 100px;
+            }
+            .no:disabled {
+                opacity: 0.1;
+                cursor: auto;
+            }
+            .no:disabled:hover {
+                background-color: #333c3c;
+                border-radius: 0;
+            }
+            .signs{
+                background-color: #7a8080;                
+                text-align: center;
+                display: grid;
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .sub_signs{
+               padding: 15px 30px;   
+               cursor: pointer;
+               background-color: #7a8080;
+               border: none;
+               color: #ffffff;
+               font-size: 25px;
+               transition: 0.3s;
+            }
+            .sub_signs#del{
+                font-size: 15px;
+            }
+            .sub_signs:hover {
+                background-color: #a1a9a9;
+                border-radius: 100px;
+            }
+            .sub_signs::selection {
+                background-color: #a1a9a9;
+                border-radius: 100px;
+            }
+            .line{
+                background-color: #f1b213;
+                height: 450px;
+                width: 20px;
+            }
+            #extraoperators{
+                background-color: #f1b213;
+                height: 450px;
+                width: 25%;
+                position: fixed;
+                margin-left: 5%;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculator">
+            <div class="head"></div>
+            <input type="text" id="display" readonly />
+            <div class="body" id="body">
+                <div class="numbers" >
+                    <button class="no" onclick="Value('7')" id="no">7</button>
+                    <button class="no" onclick="Value('8')">8</button>
+                    <button class="no" onclick="Value('9')">9</button>
+
+                    <button class="no" onclick="Value('4')" id="no4">4</button>
+                    <button class="no" onclick="Value('5')">5</button>
+                    <button class="no" onclick="Value('6')">6</button>
+
+                    <button class="no" onclick="Value('1')" id="no1">1</button>
+                    <button class="no" onclick="Value('2')">2</button>
+                    <button class="no" onclick="Value('3')">3</button>
+
+                    <button class="no" onclick="Value('.')" id="nodot">.</button>
+                    <button class="no" onclick="Value('0')">0</button>
+                    <button class="no" onclick="calculate()">=</button>
+                </div>
+                <div class="signs">
+                    <button class="sub_signs" onclick="deleteLast()" id="del">DEL</button>
+                    <button class="sub_signs" onclick="Value('+')">+</button>
+                    <button class="sub_signs" onclick="Value('-')">-</button>
+                    <button class="sub_signs" onclick="Value('*')">x</button>
+                    <button class="sub_signs" onclick="Value('/')">/</button>
+                    <button class="sub_signs" onclick="clearscreen()">C</button>
+                </div>
+                <div class="line" onmouseover="moreoperators()" ></div>                
+                <div id="extraoperators" onmouseout="closeoperators()"></div>
+            </div>
+            
+        </div>
+        
+
+
+        <script>
+            const display = document.getElementById('display');
+            const line = document.getElementById("line")
+            const extra = document.getElementById("extraoperators");
+            const no = document.getElementById("no");
+            const no1 = document.getElementById("no1");
+            const no4 = document.getElementById("no4");
+            const nodot = document.getElementById("nodot");
+            function Value(value) {
+                display.value += value;
+            }
+            function clearscreen() {
+                display.value = "";
+            }
+            function calculate() {
+                display.value = eval(display.value);
+            }
+            function deleteLast() {
+                display.value = display.value.slice(0, -1);
+            }
+            function moreoperators() {
+                no.disabled = true;
+                no1.disabled = true;
+                no4.disabled = true;
+                nodot.disabled = true;
+                extra.style.display = "block";
+            }
+
+            function closeoperators() {
+                extra.style.display = "none";
+                no.disabled = false;
+                no1.disabled = false;
+                no4.disabled = false;
+                nodot.disabled = false;
+            }
+        </script>
+
+
+    </body>
+</html>
