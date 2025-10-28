@@ -17,10 +17,14 @@
                 height: 100vh;      
             }
             .calculator{
-                width: 35%;
+                width: 440px;
                 border-radius: 15px;
                 box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-                padding: 20px;
+            }
+            #ang{
+                color: #000;
+                font-weight: bold;
+                line-height: 10px;
             }
             .head{
                 background-color: #f1b213;
@@ -86,11 +90,7 @@
             .sub_signs:hover {
                 background-color: #a1a9a9;
                 border-radius: 100px;
-            }
-            .sub_signs::selection {
-                background-color: #a1a9a9;
-                border-radius: 100px;
-            }
+            }   
             .line{
                 background-color: #f1b213;
                 height: 450px;
@@ -103,13 +103,166 @@
                 position: fixed;
                 margin-left: 5%;
                 display: none;
+                grid-template-columns: repeat(3, 1fr);
+                padding-left: 20px;
+            }
+            .sub_ep{
+               padding: 15px 30px;   
+               cursor: pointer;
+               background-color: #f1b213;
+               border: none;
+               color: #000;
+               font-size: 25px;
+               transition: 0.3s;
+            }
+            .sub_ep:hover {
+                background-color: #f4be36;
+                border-radius: 100px;
+            }
+            #invbtn{
+                font-size: 20px;
+            }
+            #degbtn{
+                font-size: 20px;
+            }
+            @media screen and (max-width: 1280px) {
+                .calculator{
+                padding: 20px;
+                }
+            }
+            @media screen and (max-width: 480px) {
+                body {
+                    padding: 0;
+                    margin: 0;
+                    min-height: 100vh;
+                    height: 100vh;
+                    background-color: #333c3c;
+                    position: fixed;
+                    width: 100%;
+                    overflow: hidden;
+                    touch-action: none;
+                }
+                .calculator {
+                    width: 100%;
+                    height: 100%;
+                    padding: 0;
+                    margin: 0;
+                    border-radius: 0;
+                    box-shadow: none;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .head {
+                    height: 4vh;
+                    min-height: 20px;
+                }
+                #ang {
+                    padding: 2px 10px;
+                    font-size: 14px;
+                }
+                #display {
+                    height: 12vh;
+                    min-height: 60px;
+                    font-size: 2em;
+                    padding: 10px;
+                    background-color: #ffffff;
+                    margin: 0;
+                }
+                .body {
+                    flex: 1;
+                    display: flex;
+                    height: 84vh;
+                }
+                .numbers {
+                    width: 75%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-rows: repeat(4, 1fr);
+                }
+                .signs {
+                    width: 20%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-rows: repeat(6, 1fr);
+                }
+                .no {
+                    padding: 0;
+                    margin: 0;
+                    height: 100%;
+                    font-size: calc(16px + 2vmin);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    touch-action: manipulation;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                .sub_signs {
+                    padding: 0;
+                    margin: 0;
+                    height: 100%;
+                    font-size: calc(14px + 2vmin);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    touch-action: manipulation;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                .line {
+                    width: 5%;
+                    height: 100%;
+                    touch-action: manipulation;
+                }
+                #extraoperators {
+                    position: fixed;
+                    right: 0;
+                    top: 18vh;
+                    height: 82vh;
+                    width: 75%;
+                    margin: 0;
+                    padding: 0;
+                    display: none;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-rows: repeat(5, 1fr);
+                    z-index: 100;
+                }
+                .sub_ep {
+                    padding: 0;
+                    margin: 0;
+                    height: 100%;
+                    font-size: calc(14px + 1.5vmin);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    touch-action: manipulation;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                .sub_signs#del {
+                    font-size: calc(12px + 1.5vmin);
+                }
+                #invbtn, #degbtn {
+                    font-size: calc(12px + 1.5vmin);
+                }
+            }
+
+            @supports (-webkit-touch-callout: none) {
+                .calculator, body {
+                    height: -webkit-fill-available;
+                }
+                .body {
+                    height: calc(100vh - 16vh);
+                    height: calc(-webkit-fill-available - 16vh);
+                }
+                input, button {
+                    font-size: 16px;
+                }
             }
         </style>
     </head>
     <body>
         <div class="calculator">
             <div class="head"></div>
-            <input type="text" id="display" readonly />
+            <span id="ang">RAD</span>
+            <input type="text" id="display" readonly/>
             <div class="body" id="body">
                 <div class="numbers" >
                     <button class="no" onclick="Value('7')" id="no">7</button>
@@ -137,7 +290,27 @@
                     <button class="sub_signs" onclick="clearscreen()">C</button>
                 </div>
                 <div class="line" onmouseover="moreoperators()" ></div>                
-                <div id="extraoperators" onmouseout="closeoperators()"></div>
+                <div id="extraoperators" onmouseout="closeoperators()" onmousemove="moreoperators()">
+                    <button class="sub_ep" onmousemove="moreoperators()" id="invbtn" onclick="inverse()">INV</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" id="degbtn" onclick="RAD()" ondblclick="DEG()">DEG</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="percent()">%</button>
+
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="sin()" id="sin">sin</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="cos()" id="cos">cos</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="tan()" id="tan">tan</button>
+                    
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="In()" id="in">In</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="log()" id="log">log</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="cuberoot()">3√</button>
+                    
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="pi()">π</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="e()">e</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="Value('^')">^</button>
+                    
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="Value('(')">(</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="Value(')')">)</button>
+                    <button class="sub_ep" onmousemove="moreoperators()" onclick="squareroot()" id="squareroot">√</button>
+                </div>
             </div>
             
         </div>
@@ -159,7 +332,8 @@
                 display.value = "";
             }
             function calculate() {
-                display.value = eval(display.value);
+                let expression = display.value.replace(/\^/g, '**');
+                display.value = eval(expression);
             }
             function deleteLast() {
                 display.value = display.value.slice(0, -1);
@@ -169,7 +343,7 @@
                 no1.disabled = true;
                 no4.disabled = true;
                 nodot.disabled = true;
-                extra.style.display = "block";
+                extra.style.display = "grid";
             }
 
             function closeoperators() {
@@ -178,6 +352,62 @@
                 no1.disabled = false;
                 no4.disabled = false;
                 nodot.disabled = false;
+            }
+
+            function inverse() {
+                var sinin = document.getElementById("sin");
+                var cosin = document.getElementById("cos");
+                var tanin = document.getElementById("tan");
+                var inin = document.getElementById("in");
+                var login = document.getElementById("log");
+                var squarerootin = document.getElementById("squareroot")   
+
+
+            }
+
+            function RAD(){
+                var rad = document.getElementById("ang").textContent= "DEG";
+                var deg = document.getElementById("degbtn").textContent= "RAD";
+            }
+            function DEG(){
+                var rad = document.getElementById("ang").textContent= "RAD";
+                var deg = document.getElementById("degbtn").textContent= "DEG";
+            }
+            function percent(){
+                display.value = ((display.value)/100).toFixed(2);
+            }
+            function sin(){
+                const value= parseFloat(display.value);
+                const radians= value*(Math.PI/180);
+                display.value = Math.sin(radians).toFixed(4);
+            }
+            function cos(){
+                const value= parseFloat(display.value);
+                const radians= value*(Math.PI/180);
+                display.value = Math.cos(radians).toFixed(4);
+            }
+            function tan(){
+                const value= parseFloat(display.value);
+                const radians= value*(Math.PI/180);
+                display.value = Math.tan(radians).toFixed(4);
+            }
+            function In(){
+                display.value = Math.log(display.value);
+            }
+            function log(){
+                display.value = Math.log10(display.value);
+            }
+            function cuberoot(){
+                display.value = Math.cbrt(display.value);
+            }
+            function pi(){
+                display.value *= Math.PI; 
+            }
+            function e(){
+                display.value *= Math.E;
+            }
+            function squareroot(){
+                display.value = Math.sqrt(display.value);
             }
         </script>
 
